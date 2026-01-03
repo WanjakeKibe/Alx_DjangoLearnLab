@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, FeedView, unlike_post
+from .views import PostViewSet, CommentViewSet, FeedView
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
@@ -12,5 +12,5 @@ urlpatterns = [
     
     path('feed/', FeedView.as_view({'get': 'list'}), name='user-feed'),
     
-    path('posts/<int:pk>/unlike/', unlike_post, name='unlike-post'),
+    #path('posts/<int:pk>/unlike/', unlike_post, name='unlike-post'),
 ]
