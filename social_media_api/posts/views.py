@@ -16,7 +16,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import Post, Like
 from notifications.models import Notification
-
+from .serializers import NotificationSerializer
 
 class FeedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -75,6 +75,14 @@ def like_post(request, pk):
             target=post
         )
 
+if comment.post.author != self.request.user:
+    Notification.objects.create(
+        recipient=comment.post.author,
+        actor=self.request.user,
+        verb='commented on your post',
+        target=comment.post
+    )
+
     return Response({"detail": "Post liked successfully."})
 
 
@@ -89,3 +97,12 @@ def unlike_post(request, pk):
     ).delete()
 
     return Response({"detail": "Post unliked successfully."})
+
+class NotificationListView(ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Notification.objects.filter(
+            recipient=self.request.user
+        ).order_by('-timestamp')
