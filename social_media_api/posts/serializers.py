@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Comment
-
+from .models import Notification
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
@@ -47,3 +47,16 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments.count()
+
+class NotificationSerializer(serializers.ModelSerializer):
+    actor = serializers.ReadOnlyField(source='actor.username')
+
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'actor',
+            'verb',
+            'is_read',
+            'timestamp'
+        ]
