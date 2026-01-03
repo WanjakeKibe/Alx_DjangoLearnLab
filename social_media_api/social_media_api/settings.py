@@ -141,4 +141,5 @@ SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=True)
 
 # Static files (using WhiteNoise for simplicity in production)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
