@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,9 +12,14 @@ env = environ.Env(
 SECRET_KEY = 'django-insecure-up8yp9l3gm9o69o#&b$9x1b2qvj7er9$ljsxq%w!exmn5a3hjk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = False
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['your-app-name.herokuapp.com', 'localhost'])
+if os.environ.get('RENDER'):
+    DEBUG = False
+elif os.environ.get('DEBUG') == 'True':
+    DEBUG = True
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'alx-djangolearnlab-hozm.onrender.com', '.onrender.com'])
 
 # Application definition
 
@@ -92,10 +98,10 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
+        conn_max_age=600
+  )
 }
 
 
@@ -137,7 +143,7 @@ USE_TZ = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=True)
+SECURE_SSL_REDIRECT = True
 
 # Static files (using WhiteNoise for simplicity in production)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
