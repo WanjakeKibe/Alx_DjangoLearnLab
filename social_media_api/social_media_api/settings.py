@@ -19,7 +19,11 @@ if os.environ.get('RENDER'):
 elif os.environ.get('DEBUG') == 'True':
     DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'alx-djangolearnlab-hozm.onrender.com', '.onrender.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
+    'localhost', 
+    '127.0.0.1', 
+    'alx-djangolearnlab-hozm.onrender.com'
+])
 
 # Application definition
 
