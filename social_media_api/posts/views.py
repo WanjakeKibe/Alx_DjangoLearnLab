@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
-
+from rest_framework.decorators import api_view, permission_classes
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     
